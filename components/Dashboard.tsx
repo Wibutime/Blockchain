@@ -7,7 +7,7 @@ import Toast from '@/components/ui/Toast';
 import Link from 'next/link';
 
 export default function Dashboard() {
-    const { chain, currentUser, logout, getBalanceOfAddress, addTransaction, mineTransactions, fetchChain, isLoading, error } = useStore();
+    const { chain, currentUser, logout, getBalanceOfAddress, addTransaction, mineTransactions, fetchChain } = useStore();
     const [depositAmount, setDepositAmount] = useState('');
     const [transferAmount, setTransferAmount] = useState('');
     const [recipient, setRecipient] = useState('');
@@ -55,7 +55,8 @@ export default function Dashboard() {
             await mineTransactions(currentUser, val);
             setDepositAmount('');
             setNotification('Đã xin cấp vốn thành công!');
-        } catch (e: any) {
+        } catch (err) {
+            const e = err as Error;
             setNotification(e.message || 'Error occurred');
         }
     };
@@ -81,7 +82,8 @@ export default function Dashboard() {
             setTransferAmount('');
             setRecipient('');
             setNotification('Chuyển khoản thành công!');
-        } catch (e: any) {
+        } catch (err) {
+            const e = err as Error;
             setNotification(e.message || 'Error occurred');
         }
     };

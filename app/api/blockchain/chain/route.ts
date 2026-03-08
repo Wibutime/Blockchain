@@ -24,7 +24,8 @@ export async function GET() {
 
         return NextResponse.json({ chain: blocks }, { status: 200 });
 
-    } catch (error: any) {
+    } catch (e) {
+        const error = e as Error;
         return NextResponse.json({ message: error.message }, { status: 500 });
     }
 }
@@ -43,7 +44,8 @@ export async function POST(req: Request) {
 
         const newBlock = await BlockModel.create(blockData);
         return NextResponse.json({ block: newBlock }, { status: 201 });
-    } catch (error: any) {
+    } catch (e) {
+        const error = e as Error;
         return NextResponse.json({ message: error.message }, { status: 500 });
     }
 }

@@ -3,7 +3,7 @@ import dbConnect from '@/lib/mongodb';
 import { BlockModel, TransactionModel } from '@/models/Block';
 import crypto from 'crypto';
 
-function calculateHash(index: number, previousHash: string, timestamp: number, transactions: any[], nonce: number): string {
+function calculateHash(index: number, previousHash: string, timestamp: number, transactions: unknown[], nonce: number): string {
     return crypto.createHash('sha256')
         .update(index + previousHash + timestamp + JSON.stringify(transactions) + nonce)
         .digest('hex');
@@ -50,7 +50,7 @@ export async function POST(req: Request) {
         const previousHash = latestBlock.hash;
         const timestamp = Date.now();
         let nonce = 0;
-        let diff = 3; // Fixed difficulty for demo
+        const diff = 3; // Fixed difficulty for demo
         let hash = calculateHash(newIndex, previousHash, timestamp, txsToMine, nonce);
 
         // Simple Proof of Work
@@ -77,7 +77,8 @@ export async function POST(req: Request) {
             block: newBlock
         }, { status: 201 });
 
-    } catch (error: any) {
+    } catch (e) {
+        const error = e as Error;
         return NextResponse.json({ message: error.message }, { status: 500 });
     }
 }

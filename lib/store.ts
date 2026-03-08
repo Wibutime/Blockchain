@@ -50,7 +50,8 @@ export const useStore = create<AppState>()(
                     if (!res.ok) throw new Error('Failed to fetch chain');
                     const data = await res.json();
                     set({ chain: data.chain, isLoading: false });
-                } catch (e: any) {
+                } catch (err) {
+                    const e = err as Error;
                     set({ error: e.message, isLoading: false });
                 }
             },
@@ -68,7 +69,8 @@ export const useStore = create<AppState>()(
                         throw new Error(data.message || 'Failed to add transaction');
                     }
                     set({ isLoading: false });
-                } catch (e: any) {
+                } catch (err) {
+                    const e = err as Error;
                     set({ error: e.message, isLoading: false });
                     throw e; // Re-throw to handle in UI components
                 }
@@ -88,7 +90,8 @@ export const useStore = create<AppState>()(
                     // After mining, fetch the updated chain
                     await get().fetchChain();
                     set({ isLoading: false });
-                } catch (e: any) {
+                } catch (err) {
+                    const e = err as Error;
                     set({ error: e.message, isLoading: false });
                     throw e;
                 }
@@ -113,7 +116,16 @@ export const useStore = create<AppState>()(
         }),
         {
             name: 'ebanking-session',
-            storage: createJSONStorage(() => localStorage),
+            storage: createJSONStorage(() => {
+                if (typeof window !== 'undefined') {
+                    return localStorage;
+                }
+                return {
+                    getItem: () => null,
+                    setItem: () => { },
+                    removeItem: () => { },
+                };
+            }),
             partialize: (state) => ({ currentUser: state.currentUser }), // Only persist currentUser
         }
     )

@@ -30,7 +30,8 @@ export async function POST(req: Request) {
             user: { username: user.username }
         }, { status: 200 });
 
-    } catch (error: any) {
+    } catch (e) {
+        const error = e as Error;
         return NextResponse.json({ message: error.message || 'Internal Server Error' }, { status: 500 });
     }
 }

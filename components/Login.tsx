@@ -43,7 +43,8 @@ export default function Login() {
             login(data.user.username);
             await fetchChain();
 
-        } catch (err: any) {
+        } catch (error) {
+            console.error(error);
             setError('Không thể kết nối đến máy chủ.');
         } finally {
             setIsLoading(false);
@@ -74,7 +75,7 @@ export default function Login() {
                         Test Banking
                     </h1>
                     <p className="mt-2 text-slate-400 text-sm font-medium tracking-wide">
-                      
+
                     </p>
                 </div>
 
@@ -190,7 +191,7 @@ export default function Login() {
                 </div>
 
                 <div className="mt-8 text-center text-xs text-slate-600 font-mono">
-     
+
                 </div>
             </div>
         </div>

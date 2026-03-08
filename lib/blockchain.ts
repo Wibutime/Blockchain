@@ -74,8 +74,8 @@ export class Blockchain {
         return this.chain[this.chain.length - 1];
     }
 
-    minePendingTransactions(miningRewardAddress: string) {
-        let block = new Block(
+    minePendingTransactions() {
+        const block = new Block(
             this.chain.length,
             Date.now(),
             this.pendingTransactions,
@@ -138,6 +138,7 @@ export class Blockchain {
     }
 
     // Restore class instance from JSON object
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     static fromJSON(data: any): Blockchain {
         const blockchain = new Blockchain();
         if (!data) return blockchain;
@@ -147,6 +148,7 @@ export class Blockchain {
         blockchain.pendingTransactions = data.pendingTransactions;
 
         // Re-instantiate Blocks
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         blockchain.chain = data.chain.map((blockData: any) => {
             const blk = new Block(
                 blockData.index,

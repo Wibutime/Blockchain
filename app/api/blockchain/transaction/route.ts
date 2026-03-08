@@ -26,7 +26,8 @@ export async function POST(req: Request) {
             transaction: tx
         }, { status: 201 });
 
-    } catch (error: any) {
+    } catch (e) {
+        const error = e as Error;
         return NextResponse.json({ message: error.message }, { status: 500 });
     }
 }
@@ -37,7 +38,8 @@ export async function GET() {
         await dbConnect();
         const pendingTxs = await TransactionModel.find({});
         return NextResponse.json({ transactions: pendingTxs }, { status: 200 });
-    } catch (error: any) {
+    } catch (e) {
+        const error = e as Error;
         return NextResponse.json({ message: error.message }, { status: 500 });
     }
 }

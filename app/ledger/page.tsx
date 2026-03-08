@@ -1,14 +1,20 @@
 'use client';
 import { useStore } from '@/lib/store';
 import Link from 'next/link';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function LedgerPage() {
     const { chain, currentUser, logout, fetchChain, isLoading } = useStore();
+    const [mounted, setMounted] = useState(false);
 
     useEffect(() => {
+        setMounted(true);
         fetchChain();
     }, [fetchChain]);
+
+    if (!mounted) {
+        return <div className="min-h-screen bg-[#0a0f1c]"></div>;
+    }
 
     if (!currentUser) return (
         <div className="flex min-h-screen items-center justify-center p-8 bg-[#0a0f1c] relative overflow-hidden">
